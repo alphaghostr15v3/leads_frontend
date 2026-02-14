@@ -7,6 +7,7 @@ import {
     Folders,
     BookOpen,
     MessageSquareQuote,
+    Mail,
     LogOut,
     ChevronRight,
     Users
@@ -27,6 +28,7 @@ const AdminLayout = () => {
     };
     const menuItems = [
         { title: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/admin' },
+        { title: 'Inquiries', icon: <Mail size={20} />, path: '/admin/leads' },
         { title: 'Portfolio', icon: <Folders size={20} />, path: '/admin/portfolio' },
         { title: 'Testimonials', icon: <MessageSquareQuote size={20} />, path: '/admin/testimonials' },
         { title: 'Team', icon: <Users size={20} />, path: '/admin/team' },
