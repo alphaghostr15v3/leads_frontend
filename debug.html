@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Test</title>
+    <style>
+        body { background: #000; color: #0f0; font-family: monospace; padding: 20px; }
+        .error { color: #f00; }
+        .success { color: #0f0; }
+    </style>
+</head>
+<body>
+    <h1>Browser Debug Test</h1>
+    <div id="root">Loading React...</div>
+    <div id="debug"></div>
+    
+    <script type="module">
+        const debug = document.getElementById('debug');
+        
+        try {
+            debug.innerHTML += '<p class="success">✓ JavaScript is working</p>';
+            
+            // Test if React module loads
+            import('react').then(() => {
+                debug.innerHTML += '<p class="success">✓ React module loaded</p>';
+            }).catch(err => {
+                debug.innerHTML += `<p class="error">✗ React load error: ${err.message}</p>`;
+            });
+            
+            // Test if main.jsx loads
+            import('/src/main.jsx').then(() => {
+                debug.innerHTML += '<p class="success">✓ main.jsx loaded</p>';
+            }).catch(err => {
+                debug.innerHTML += `<p class="error">✗ main.jsx error: ${err.message}</p>`;
+                console.error('Main.jsx error:', err);
+            });
+            
+        } catch (err) {
+            debug.innerHTML += `<p class="error">✗ Critical error: ${err.message}</p>`;
+        }
+        
+        // Log all errors
+        window.addEventListener('error', (e) => {
+            debug.innerHTML += `<p class="error">✗ Runtime error: ${e.message}</p>`;
+            console.error('Error event:', e);
+        });
+    </script>
+</body>
+</html>
