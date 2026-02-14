@@ -8,7 +8,8 @@ import {
     BookOpen,
     MessageSquareQuote,
     LogOut,
-    ChevronRight
+    ChevronRight,
+    Users
 } from 'lucide-react';
 
 const AdminLayout = () => {
@@ -28,6 +29,7 @@ const AdminLayout = () => {
         { title: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/admin' },
         { title: 'Portfolio', icon: <Folders size={20} />, path: '/admin/portfolio' },
         { title: 'Testimonials', icon: <MessageSquareQuote size={20} />, path: '/admin/testimonials' },
+        { title: 'Team', icon: <Users size={20} />, path: '/admin/team' },
     ];
 
     return (

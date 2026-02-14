@@ -5,6 +5,7 @@ import AdminLayout from './components/admin/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import ManagePortfolio from './pages/admin/ManagePortfolio';
 import ManageTestimonials from './pages/admin/ManageTestimonials';
+import ManageTeam from './pages/admin/ManageTeam';
 import AdminLogin from './pages/admin/AdminLogin';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 import './index.css';
@@ -26,6 +27,7 @@ function App() {
               <Route index element={<AdminDashboard />} />
               <Route path="portfolio" element={<ManagePortfolio />} />
               <Route path="testimonials" element={<ManageTestimonials />} />
+              <Route path="team" element={<ManageTeam />} />
             </Route>
           </Route>
         </Routes>
