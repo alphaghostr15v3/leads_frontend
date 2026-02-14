@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '../../utils/api';
 
+// Swiper imports
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+
 const defaultProjects = [
     {
         id: 'd1',
@@ -28,6 +35,78 @@ const defaultProjects = [
 
 const categories = ['All', 'Web Development', 'Video Editing', 'Graphic Design'];
 
+const ProjectCard = ({ project }) => {
+    return (
+        <motion.div
+            layout
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.3 }}
+            onClick={() => project.project_url && window.open(project.project_url, '_blank')}
+            className={`group relative overflow-hidden rounded-2xl aspect-[4/3] ${project.project_url ? 'cursor-pointer' : 'cursor-default'}`}
+        >
+            <img
+                src={project.image}
+                alt={project.title}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            />
+
+            <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                <div className="absolute top-4 right-4 bg-primary-500/20 backdrop-blur-md p-2 rounded-full transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-400">
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14 21 3"></path>
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    </svg>
+                </div>
+                <span className="text-primary-400 text-sm font-medium mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-100">
+                    {project.category}
+                </span>
+                <h3 className="text-2xl font-bold text-white mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-150">
+                    {project.title}
+                </h3>
+                <p className="text-gray-300 text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-200">
+                    {project.description}
+                </p>
+            </div>
+        </motion.div>
+    );
+};
+
+const ProjectSlider = ({ title, projects }) => {
+    if (projects.length === 0) return null;
+    
+    return (
+        <div className="mb-12">
+            {title && <h3 className="text-xl font-bold text-white mb-6 pl-2 border-l-4 border-primary-500">{title}</h3>}
+            <Swiper
+                modules={[Autoplay, Pagination, Navigation]}
+                spaceBetween={30}
+                slidesPerView={1}
+                autoplay={{
+                    delay: 3000,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true,
+                }}
+                pagination={{ clickable: true }}
+                navigation={true}
+                breakpoints={{
+                    640: { slidesPerView: 2 },
+                    1024: { slidesPerView: 3 },
+                }}
+                className="portfolio-swiper !pb-12"
+            >
+                {projects.map((project) => (
+                    <SwiperSlide key={project.id}>
+                        <ProjectCard project={project} />
+                    </SwiperSlide>
+                ))}
+            </Swiper>
+        </div>
+    );
+};
+
 export default function PortfolioSection() {
     const [projects, setProjects] = useState([]);
     const [activeCategory, setActiveCategory] = useState('All');
@@ -52,15 +131,21 @@ export default function PortfolioSection() {
         fetchPortfolio();
     }, []);
 
+    const groupedProjects = {
+        'Web Development': projects.filter(p => p.category === 'Web Development'),
+        'Video Editing': projects.filter(p => p.category === 'Video Editing'),
+        'Graphic Design': projects.filter(p => p.category === 'Graphic Design'),
+    };
+
     const filteredProjects = activeCategory === 'All'
         ? projects
         : projects.filter(p => p.category === activeCategory);
 
     return (
-        <section id="portfolio" className="section-padding">
-            <div className="max-w-7xl mx-auto">
+        <section id="portfolio" className="section-padding overflow-hidden">
+            <div className="max-w-7xl mx-auto px-4">
                 <motion.div
-                    className="text-center mb-12"
+                    className="text-center mb-16"
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -88,47 +173,25 @@ export default function PortfolioSection() {
                     </div>
                 </motion.div>
 
-                <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <AnimatePresence>
-                        {filteredProjects.map((project) => (
-                            <motion.div
-                                layout
-                                key={project.id}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.9 }}
-                                transition={{ duration: 0.3 }}
-                                onClick={() => project.project_url && window.open(project.project_url, '_blank')}
-                                className={`group relative overflow-hidden rounded-2xl aspect-[4/3] ${project.project_url ? 'cursor-pointer' : 'cursor-default'}`}
-                            >
-                                <img
-                                    src={project.image}
-                                    alt={project.title}
-                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                />
-
-                                <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                                    <div className="absolute top-4 right-4 bg-primary-500/20 backdrop-blur-md p-2 rounded-full transform -translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-400">
-                                            <path d="M15 3h6v6"></path>
-                                            <path d="M10 14 21 3"></path>
-                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                        </svg>
-                                    </div>
-                                    <span className="text-primary-400 text-sm font-medium mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-100">
-                                        {project.category}
-                                    </span>
-                                    <h3 className="text-2xl font-bold text-white mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-150">
-                                        {project.title}
-                                    </h3>
-                                    <p className="text-gray-300 text-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-200">
-                                        {project.description}
-                                    </p>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </AnimatePresence>
-                </motion.div>
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={activeCategory}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ duration: 0.4 }}
+                    >
+                        {activeCategory === 'All' ? (
+                            <>
+                                <ProjectSlider title="Web Development" projects={groupedProjects['Web Development']} />
+                                <ProjectSlider title="Video Editing" projects={groupedProjects['Video Editing']} />
+                                <ProjectSlider title="Graphic Design" projects={groupedProjects['Graphic Design']} />
+                            </>
+                        ) : (
+                            <ProjectSlider title={activeCategory} projects={filteredProjects} />
+                        )}
+                    </motion.div>
+                </AnimatePresence>
 
                 <div className="text-center mt-12">
                     <button className="btn-secondary">
