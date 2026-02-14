@@ -257,24 +257,29 @@
   background: var(--color-primary-600);
 }
 
-/* Portfolio Swiper Custom Styles */
-.portfolio-swiper {
+/* Portfolio & Testimonial Swiper Custom Styles */
+.portfolio-swiper,
+.testimonials-swiper {
   padding-bottom: 3.5rem !important;
 }
 
-.portfolio-swiper .swiper-pagination-bullet {
+.portfolio-swiper .swiper-pagination-bullet,
+.testimonials-swiper .swiper-pagination-bullet {
   background: var(--color-primary-400, #38bdf8);
   opacity: 0.3;
 }
 
-.portfolio-swiper .swiper-pagination-bullet-active {
+.portfolio-swiper .swiper-pagination-bullet-active,
+.testimonials-swiper .swiper-pagination-bullet-active {
   background: var(--color-primary-500, #0ea5e9);
   opacity: 1;
   box-shadow: 0 0 10px rgba(14, 165, 233, 0.5);
 }
 
 .portfolio-swiper .swiper-button-next,
-.portfolio-swiper .swiper-button-prev {
+.portfolio-swiper .swiper-button-prev,
+.testimonials-swiper .swiper-button-next,
+.testimonials-swiper .swiper-button-prev {
   color: var(--color-primary-400, #38bdf8);
   background: rgba(15, 23, 42, 0.6);
   backdrop-filter: blur(8px);
@@ -286,13 +291,17 @@
 }
 
 .portfolio-swiper .swiper-button-next:after,
-.portfolio-swiper .swiper-button-prev:after {
+.portfolio-swiper .swiper-button-prev:after,
+.testimonials-swiper .swiper-button-next:after,
+.testimonials-swiper .swiper-button-prev:after {
   font-size: 18px;
   font-weight: bold;
 }
 
 .portfolio-swiper .swiper-button-next:hover,
-.portfolio-swiper .swiper-button-prev:hover {
+.portfolio-swiper .swiper-button-prev:hover,
+.testimonials-swiper .swiper-button-next:hover,
+.testimonials-swiper .swiper-button-prev:hover {
   background: var(--color-primary-600, #0284c7);
   color: white;
   border-color: var(--color-primary-400, #38bdf8);
