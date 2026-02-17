@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Linkedin, Twitter, Github, Download, Facebook, Instagram } from 'lucide-react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Navigation, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 import api, { BACKEND_URL } from '../../utils/api';
 
 const defaultTeamMembers = [
@@ -103,68 +108,91 @@ export default function TeamSection() {
                     </p>
                 </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                    {teamMembers.map((member, index) => (
-                        <motion.div
-                            key={index}
-                            className="glass-card group"
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1, duration: 0.5 }}
-                        >
-                            <div className="relative overflow-hidden aspect-[4/5]">
-                                <img
-                                    src={member.image}
-                                    alt={member.name}
-                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                                    <div className="flex justify-center gap-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                        <a href={member.social.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 backdrop-blur-md rounded-full hover:bg-primary-500 transition-colors">
-                                            <Linkedin size={20} />
-                                        </a>
-                                        <a href={member.social.twitter} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 backdrop-blur-md rounded-full hover:bg-primary-500 transition-colors">
-                                            <Twitter size={20} />
-                                        </a>
-                                        <a href={member.social.github} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 backdrop-blur-md rounded-full hover:bg-primary-500 transition-colors">
-                                            <Github size={20} />
-                                        </a>
-                                        <a href={member.social.facebook} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 backdrop-blur-md rounded-full hover:bg-primary-500 transition-colors">
-                                            <Facebook size={20} />
-                                        </a>
-                                        <a href={member.social.instagram} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 backdrop-blur-md rounded-full hover:bg-primary-500 transition-colors">
-                                            <Instagram size={20} />
-                                        </a>
+                <div className="max-w-7xl mx-auto">
+                    <Swiper
+                        modules={[Pagination, Navigation, Autoplay]}
+                        spaceBetween={30}
+                        slidesPerView={1}
+                        navigation
+                        pagination={{ clickable: true }}
+                        autoplay={{
+                            delay: 3500,
+                            disableOnInteraction: false,
+                        }}
+                        loop={true}
+                        breakpoints={{
+                            640: {
+                                slidesPerView: 2,
+                            },
+                            1024: {
+                                slidesPerView: 3,
+                            },
+                        }}
+                        className="team-swiper pb-12"
+                    >
+                        {teamMembers.map((member, index) => (
+                            <SwiperSlide key={index} className="pb-10">
+                                <motion.div
+                                    className="glass-card group h-full"
+                                    initial={{ opacity: 0, y: 30 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: index * 0.1, duration: 0.5 }}
+                                >
+                                    <div className="relative overflow-hidden aspect-[4/5]">
+                                        <img
+                                            src={member.image}
+                                            alt={member.name}
+                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                                            <div className="flex justify-center gap-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                                <a href={member.social.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 backdrop-blur-md rounded-full hover:bg-primary-500 transition-colors">
+                                                    <Linkedin size={20} />
+                                                </a>
+                                                <a href={member.social.twitter} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 backdrop-blur-md rounded-full hover:bg-primary-500 transition-colors">
+                                                    <Twitter size={20} />
+                                                </a>
+                                                <a href={member.social.github} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 backdrop-blur-md rounded-full hover:bg-primary-500 transition-colors">
+                                                    <Github size={20} />
+                                                </a>
+                                                <a href={member.social.facebook} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 backdrop-blur-md rounded-full hover:bg-primary-500 transition-colors">
+                                                    <Facebook size={20} />
+                                                </a>
+                                                <a href={member.social.instagram} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 backdrop-blur-md rounded-full hover:bg-primary-500 transition-colors">
+                                                    <Instagram size={20} />
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
 
-                            <div className="p-6">
-                                <div className="flex items-center justify-between mb-1">
-                                    <h3 className="text-xl font-heading font-bold text-white group-hover:text-accent-400 transition-colors">
-                                        {member.name}
-                                    </h3>
-                                    {member.cv_url && (
-                                        <a
-                                            href={member.cv_url.startsWith('http') ? member.cv_url : `${BACKEND_URL}${member.cv_url.startsWith('/') ? '' : '/'}${member.cv_url}`}
-                                            download
-                                            className="p-2 bg-primary-500/20 hover:bg-primary-500/30 rounded-lg transition-colors"
-                                            title="Download CV"
-                                        >
-                                            <Download size={18} className="text-primary-400" />
-                                        </a>
-                                    )}
-                                </div>
-                                <p className="text-primary-400 text-sm font-medium mb-3">
-                                    {member.role}
-                                </p>
-                                <p className="text-gray-400 text-sm leading-relaxed">
-                                    {member.bio}
-                                </p>
-                            </div>
-                        </motion.div>
-                    ))}
+                                    <div className="p-6">
+                                        <div className="flex items-center justify-between mb-1">
+                                            <h3 className="text-xl font-heading font-bold text-white group-hover:text-accent-400 transition-colors">
+                                                {member.name}
+                                            </h3>
+                                            {member.cv_url && (
+                                                <a
+                                                    href={member.cv_url.startsWith('http') ? member.cv_url : `${BACKEND_URL}${member.cv_url.startsWith('/') ? '' : '/'}${member.cv_url}`}
+                                                    download
+                                                    className="p-2 bg-primary-500/20 hover:bg-primary-500/30 rounded-lg transition-colors"
+                                                    title="Download CV"
+                                                >
+                                                    <Download size={18} className="text-primary-400" />
+                                                </a>
+                                            )}
+                                        </div>
+                                        <p className="text-primary-400 text-sm font-medium mb-3">
+                                            {member.role}
+                                        </p>
+                                        <p className="text-gray-400 text-sm leading-relaxed">
+                                            {member.bio}
+                                        </p>
+                                    </div>
+                                </motion.div>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
                 </div>
             </div>
         </section>
