@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Pencil, Trash2, X, Upload, Linkedin, Twitter, Github } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, Upload, Linkedin, Twitter, Github, Download } from 'lucide-react';
 import api, { BACKEND_URL } from '../../utils/api';
 
 const ManageTeam = () => {
@@ -21,6 +21,8 @@ const ManageTeam = () => {
     });
     const [imageFile, setImageFile] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
+    const [cvFile, setCvFile] = useState(null);
+    const [cvFileName, setCvFileName] = useState(null);
 
     useEffect(() => {
         fetchTeam();
@@ -45,6 +47,14 @@ const ManageTeam = () => {
         }
     };
 
+    const handleCvChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setCvFile(file);
+            setCvFileName(file.name);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
@@ -58,6 +68,10 @@ const ManageTeam = () => {
 
         if (imageFile) {
             formData.append('image', imageFile);
+        }
+
+        if (cvFile) {
+            formData.append('cv', cvFile);
         }
 
         setSaving(true);
@@ -76,6 +90,8 @@ const ManageTeam = () => {
             fetchTeam();
         } catch (err) {
             console.error('Failed to save team member', err);
+            console.error('Error response:', err.response?.data);
+            alert(`Failed to save team member: ${err.response?.data?.message || err.message || 'Unknown error'}`);
         } finally {
             setSaving(false);
         }
@@ -94,6 +110,8 @@ const ManageTeam = () => {
         });
         setImageFile(null);
         setPreviewUrl(m.image_url);
+        setCvFile(null);
+        setCvFileName(m.cv_url ? m.cv_url.split('/').pop() : null);
         setShowModal(true);
     };
 
@@ -122,6 +140,8 @@ const ManageTeam = () => {
         });
         setImageFile(null);
         setPreviewUrl(null);
+        setCvFile(null);
+        setCvFileName(null);
     };
 
     return (
@@ -157,7 +177,19 @@ const ManageTeam = () => {
                                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                             />
                             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-dark-950 to-transparent p-6 pt-12">
-                                <h4 className="font-heading font-bold text-white uppercase text-sm mb-1">{m.name}</h4>
+                                <div className="flex items-center justify-between mb-1">
+                                    <h4 className="font-heading font-bold text-white uppercase text-sm">{m.name}</h4>
+                                    {m.cv_url && (
+                                        <a
+                                            href={m.cv_url.startsWith('http') ? m.cv_url : `${BACKEND_URL}${m.cv_url.startsWith('/') ? '' : '/'}${m.cv_url}`}
+                                            download
+                                            className="p-1.5 bg-primary-500/20 hover:bg-primary-500/30 rounded-lg transition-colors"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            <Download size={14} className="text-primary-400" />
+                                        </a>
+                                    )}
+                                </div>
                                 <p className="text-primary-400 text-[10px] tracking-wider uppercase font-medium">{m.role}</p>
                             </div>
 
@@ -307,6 +339,32 @@ const ManageTeam = () => {
                                     rows="3"
                                     placeholder="Brief introduction..."
                                 />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-400 mb-2">CV / Resume (PDF)</label>
+                                <div className="flex items-center gap-4 p-2 bg-white/5 border border-white/10 rounded-xl">
+                                    <input
+                                        type="file"
+                                        onChange={handleCvChange}
+                                        accept=".pdf,.doc,.docx"
+                                        className="hidden"
+                                        id="team-cv-upload"
+                                    />
+                                    <label
+                                        htmlFor="team-cv-upload"
+                                        className="flex items-center justify-center gap-2 w-full py-2 px-4 bg-secondary-500/10 border border-secondary-500/20 rounded-lg text-secondary-400 cursor-pointer hover:bg-secondary-500/20 transition-all uppercase text-[10px] font-bold tracking-wider"
+                                    >
+                                        <Upload size={14} />
+                                        {cvFileName ? 'Change CV' : 'Upload CV'}
+                                    </label>
+                                    {cvFileName && (
+                                        <div className="flex items-center gap-2 px-3 py-1 bg-secondary-500/10 rounded-lg">
+                                            <Download size={12} className="text-secondary-400" />
+                                            <span className="text-[10px] text-secondary-400 truncate max-w-[150px]">{cvFileName}</span>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
 
                             <div className="pt-4 flex gap-3">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Linkedin, Twitter, Github } from 'lucide-react';
+import { Linkedin, Twitter, Github, Download } from 'lucide-react';
 import api, { BACKEND_URL } from '../../utils/api';
 
 const defaultTeamMembers = [
@@ -58,17 +58,19 @@ export default function TeamSection() {
             try {
                 const res = await api.get('/team');
                 if (res.data && res.data.length > 0) {
-                    setTeamMembers(res.data.map(m => ({
+                    const mappedTeam = res.data.map(m => ({
                         name: m.name,
                         role: m.role,
                         image: m.image_url ? (m.image_url.startsWith('http') ? m.image_url : `${BACKEND_URL}${m.image_url.startsWith('/') ? '' : '/'}${m.image_url}`) : `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name)}&background=random`,
                         bio: m.bio,
+                        cv_url: m.cv_url,
                         social: {
                             linkedin: m.linkedin || '#',
                             twitter: m.twitter || '#',
                             github: m.github || '#'
                         }
-                    })));
+                    }));
+                    setTeamMembers(mappedTeam);
                 } else {
                     setTeamMembers(defaultTeamMembers);
                 }
@@ -131,9 +133,21 @@ export default function TeamSection() {
                             </div>
 
                             <div className="p-6">
-                                <h3 className="text-xl font-heading font-bold text-white mb-1 group-hover:text-accent-400 transition-colors">
-                                    {member.name}
-                                </h3>
+                                <div className="flex items-center justify-between mb-1">
+                                    <h3 className="text-xl font-heading font-bold text-white group-hover:text-accent-400 transition-colors">
+                                        {member.name}
+                                    </h3>
+                                    {member.cv_url && (
+                                        <a
+                                            href={member.cv_url.startsWith('http') ? member.cv_url : `${BACKEND_URL}${member.cv_url.startsWith('/') ? '' : '/'}${member.cv_url}`}
+                                            download
+                                            className="p-2 bg-primary-500/20 hover:bg-primary-500/30 rounded-lg transition-colors"
+                                            title="Download CV"
+                                        >
+                                            <Download size={18} className="text-primary-400" />
+                                        </a>
+                                    )}
+                                </div>
                                 <p className="text-primary-400 text-sm font-medium mb-3">
                                     {member.role}
                                 </p>
