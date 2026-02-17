@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Pencil, Trash2, X, Upload, Linkedin, Twitter, Github, Download, Facebook, Instagram } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, Upload, Linkedin, Twitter, Github, Download, Facebook, Instagram, Globe } from 'lucide-react';
 import api, { BACKEND_URL } from '../../utils/api';
 
 const ManageTeam = () => {
@@ -19,6 +19,7 @@ const ManageTeam = () => {
         github: '',
         facebook: '',
         instagram: '',
+        profile_url: '',
         order: 0
     });
     const [imageFile, setImageFile] = useState(null);
@@ -68,6 +69,7 @@ const ManageTeam = () => {
         formData.append('github', form.github || '');
         formData.append('facebook', form.facebook || '');
         formData.append('instagram', form.instagram || '');
+        formData.append('profile_url', form.profile_url || '');
         formData.append('order', form.order);
 
         if (imageFile) {
@@ -112,6 +114,7 @@ const ManageTeam = () => {
             github: m.github || '',
             facebook: m.facebook || '',
             instagram: m.instagram || '',
+            profile_url: m.profile_url || '',
             order: m.order || 0
         });
         setImageFile(null);
@@ -144,6 +147,7 @@ const ManageTeam = () => {
             github: '',
             facebook: '',
             instagram: '',
+            profile_url: '',
             order: 0
         });
         setImageFile(null);
@@ -312,6 +316,16 @@ const ManageTeam = () => {
                                         type="text"
                                         value={form.instagram}
                                         onChange={e => setForm({ ...form, instagram: e.target.value })}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary-500"
+                                        placeholder="https://..."
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-400 mb-2">Portfolio/Website</label>
+                                    <input
+                                        type="text"
+                                        value={form.profile_url}
+                                        onChange={e => setForm({ ...form, profile_url: e.target.value })}
                                         className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary-500"
                                         placeholder="https://..."
                                     />

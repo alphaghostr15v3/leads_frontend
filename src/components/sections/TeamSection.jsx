@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Linkedin, Twitter, Github, Download, Facebook, Instagram } from 'lucide-react';
+import { Linkedin, Twitter, Github, Download, Facebook, Instagram, Globe } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
@@ -74,7 +74,8 @@ export default function TeamSection() {
                             twitter: m.twitter || '#',
                             github: m.github || '#',
                             facebook: m.facebook || '#',
-                            instagram: m.instagram || '#'
+                            instagram: m.instagram || '#',
+                            profile_url: m.profile_url || '#'
                         }
                     }));
                     setTeamMembers(mappedTeam);
@@ -162,6 +163,11 @@ export default function TeamSection() {
                                                 <a href={member.social.instagram} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 backdrop-blur-md rounded-full hover:bg-primary-500 transition-colors">
                                                     <Instagram size={20} />
                                                 </a>
+                                                {member.social.profile_url !== '#' && (
+                                                    <a href={member.social.profile_url} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 backdrop-blur-md rounded-full hover:bg-primary-500 transition-colors">
+                                                        <Globe size={20} />
+                                                    </a>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
