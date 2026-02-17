@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Linkedin, Twitter, Github, Download } from 'lucide-react';
+import { Linkedin, Twitter, Github, Download, Facebook, Instagram } from 'lucide-react';
 import api, { BACKEND_URL } from '../../utils/api';
 
 const defaultTeamMembers = [
@@ -67,7 +67,9 @@ export default function TeamSection() {
                         social: {
                             linkedin: m.linkedin || '#',
                             twitter: m.twitter || '#',
-                            github: m.github || '#'
+                            github: m.github || '#',
+                            facebook: m.facebook || '#',
+                            instagram: m.instagram || '#'
                         }
                     }));
                     setTeamMembers(mappedTeam);
@@ -127,6 +129,12 @@ export default function TeamSection() {
                                         </a>
                                         <a href={member.social.github} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 backdrop-blur-md rounded-full hover:bg-primary-500 transition-colors">
                                             <Github size={20} />
+                                        </a>
+                                        <a href={member.social.facebook} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 backdrop-blur-md rounded-full hover:bg-primary-500 transition-colors">
+                                            <Facebook size={20} />
+                                        </a>
+                                        <a href={member.social.instagram} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 backdrop-blur-md rounded-full hover:bg-primary-500 transition-colors">
+                                            <Instagram size={20} />
                                         </a>
                                     </div>
                                 </div>

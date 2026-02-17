@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Pencil, Trash2, X, Upload, Linkedin, Twitter, Github, Download } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, Upload, Linkedin, Twitter, Github, Download, Facebook, Instagram } from 'lucide-react';
 import api, { BACKEND_URL } from '../../utils/api';
 
 const ManageTeam = () => {
@@ -17,6 +17,8 @@ const ManageTeam = () => {
         linkedin: '',
         twitter: '',
         github: '',
+        facebook: '',
+        instagram: '',
         order: 0
     });
     const [imageFile, setImageFile] = useState(null);
@@ -64,6 +66,8 @@ const ManageTeam = () => {
         formData.append('linkedin', form.linkedin || '');
         formData.append('twitter', form.twitter || '');
         formData.append('github', form.github || '');
+        formData.append('facebook', form.facebook || '');
+        formData.append('instagram', form.instagram || '');
         formData.append('order', form.order);
 
         if (imageFile) {
@@ -106,6 +110,8 @@ const ManageTeam = () => {
             linkedin: m.linkedin || '',
             twitter: m.twitter || '',
             github: m.github || '',
+            facebook: m.facebook || '',
+            instagram: m.instagram || '',
             order: m.order || 0
         });
         setImageFile(null);
@@ -136,6 +142,8 @@ const ManageTeam = () => {
             linkedin: '',
             twitter: '',
             github: '',
+            facebook: '',
+            instagram: '',
             order: 0
         });
         setImageFile(null);
@@ -257,7 +265,7 @@ const ManageTeam = () => {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-3 gap-4">
+                            <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-400 mb-2">LinkedIn URL</label>
                                     <input
@@ -284,6 +292,26 @@ const ManageTeam = () => {
                                         type="text"
                                         value={form.github}
                                         onChange={e => setForm({ ...form, github: e.target.value })}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary-500"
+                                        placeholder="https://..."
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-400 mb-2">Facebook URL</label>
+                                    <input
+                                        type="text"
+                                        value={form.facebook}
+                                        onChange={e => setForm({ ...form, facebook: e.target.value })}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary-500"
+                                        placeholder="https://..."
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-400 mb-2">Instagram URL</label>
+                                    <input
+                                        type="text"
+                                        value={form.instagram}
+                                        onChange={e => setForm({ ...form, instagram: e.target.value })}
                                         className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-primary-500"
                                         placeholder="https://..."
                                     />
